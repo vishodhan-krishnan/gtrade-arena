@@ -2465,17 +2465,14 @@ export default function DocsPage() {
               Quick Links
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <a href="#" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-secondary)', textDecoration: 'none' }}>
+              <a href="https://docs.google.com/document/d/1d9FgFhVWgNFLGxWV4FUEBxVFI-o2CQwXx448cnnNlvI" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-secondary)', textDecoration: 'none' }}>
                 <span>📄</span> Documentation <Icons.ExternalLink size={12} />
               </a>
-              <a href="https://github.com/priyam-03/Capstone" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-secondary)', textDecoration: 'none' }}>
+              <a href="https://github.com/priyam-choksi/matsmatsmats" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-secondary)', textDecoration: 'none' }}>
                 <Icons.GitHub size={14} /> Project Repo <Icons.ExternalLink size={12} />
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-secondary)', textDecoration: 'none' }}>
+              <a href="https://github.com/vishodhan-krishnan/gtrade-arena" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-secondary)', textDecoration: 'none' }}>
                 <span>🖥️</span> UI Repo <Icons.ExternalLink size={12} />
-              </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-secondary)', textDecoration: 'none' }}>
-                <span>📊</span> Slide Deck <Icons.ExternalLink size={12} />
               </a>
             </div>
           </div>
