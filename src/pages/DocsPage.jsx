@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useTheme } from '../App'
 import ReactMarkdown from 'react-markdown'
+
 
 // ========== FAQ DATA ==========
 const faqCategories = [
@@ -2307,6 +2308,75 @@ const FAQItem = ({ faq, isOpen, onToggle }) => {
 
 // Main Component
 export default function DocsPage() {
+  // ===== EASTER EGG STATE =====
+  const [eggClicks, setEggClicks] = useState({ priyam: 0, vishodhan: 0 });
+  const [eggActive, setEggActive] = useState(null);
+  const [eggBuffer, setEggBuffer] = useState('');
+  const [showEggVideo, setShowEggVideo] = useState(false);
+  const [showEggConfetti, setShowEggConfetti] = useState(false);
+  const [confettiPieces, setConfettiPieces] = useState([]);
+  const videoRef = useRef(null);
+
+  // Reset clicks after 5 seconds
+  useEffect(() => {
+    if (eggClicks.priyam > 0 || eggClicks.vishodhan > 0) {
+      const timer = setTimeout(() => {
+        setEggClicks({ priyam: 0, vishodhan: 0 });
+        setEggActive(null);
+        setEggBuffer('');
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [eggClicks]);
+
+  // Listen for "randi" after 5 clicks
+  useEffect(() => {
+    if (!eggActive) return;
+    const handleKeyPress = (e) => {
+      const newBuffer = (eggBuffer + e.key.toLowerCase()).slice(-6);
+      setEggBuffer(newBuffer);
+      if (newBuffer === 'randi') {
+        setShowEggVideo(true);
+        setEggBuffer('');
+        setEggClicks({ priyam: 0, vishodhan: 0 });
+      }
+    };
+    window.addEventListener('keypress', handleKeyPress);
+    return () => window.removeEventListener('keypress', handleKeyPress);
+  }, [eggActive, eggBuffer]);
+
+  // Handle photo click
+  const handleEggClick = (person, e) => {
+    e.stopPropagation();
+    const newCount = eggClicks[person] + 1;
+    setEggClicks(prev => ({ ...prev, [person]: newCount }));
+    if (newCount >= 5) setEggActive(person);
+  };
+
+// Handle video end OR exit - FAST confetti, no blur
+  const handleEggVideoEnd = () => {
+    const pieces = Array.from({ length: 300 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      delay: Math.random() * 0.3,
+      duration: 1.5 + Math.random() * 1.5,
+      color: ['#10b981', '#06b6d4', '#8b5cf6', '#ec4899', '#f59e0b', '#ef4444', '#3b82f6', '#fbbf24'][Math.floor(Math.random() * 8)],
+      size: 8 + Math.random() * 12
+    }));
+    setConfettiPieces(pieces);
+    setShowEggVideo(false);
+    setShowEggConfetti(true);
+    if (videoRef.current) videoRef.current.pause();
+    setTimeout(() => {
+      setShowEggConfetti(false);
+      setConfettiPieces([]);
+      setEggActive(null);
+      setEggClicks({ priyam: 0, vishodhan: 0 });
+    }, 2000);
+  };
+
+  // ===== END EASTER EGG STATE =====
+
   const { isDark } = useTheme()
   const [selectedCategory, setSelectedCategory] = useState('overview')
   const [openFAQ, setOpenFAQ] = useState(null)
@@ -2468,11 +2538,11 @@ export default function DocsPage() {
               <a href="https://docs.google.com/document/d/1d9FgFhVWgNFLGxWV4FUEBxVFI-o2CQwXx448cnnNlvI" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-secondary)', textDecoration: 'none' }}>
                 <span>📄</span> Documentation <Icons.ExternalLink size={12} />
               </a>
-              <a href="https://github.com/priyam-choksi/matsmatsmats" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-secondary)', textDecoration: 'none' }}>
-                <Icons.GitHub size={14} /> Project Repo <Icons.ExternalLink size={12} />
-              </a>
               <a href="https://github.com/vishodhan-krishnan/gtrade-arena" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-secondary)', textDecoration: 'none' }}>
-                <span>🖥️</span> UI Repo <Icons.ExternalLink size={12} />
+                <span>🖥️</span> Project Repo <Icons.ExternalLink size={12} />
+              </a>
+              <a href="https://docs.google.com/document/d/1QnFzBTIzh1E66WQDzSUWXoSTA05o-UJ19tS519vi9Es/edit?tab=t.0" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-secondary)', textDecoration: 'none' }}>
+                <span>📊</span> Weekly Progress <Icons.ExternalLink size={12} />
               </a>
             </div>
           </div>
@@ -2491,8 +2561,8 @@ export default function DocsPage() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {[
-                { name: 'Priyam Deepak Choksi', photo: '/priyam.jpg', github: 'https://github.com/priyam-choksi', linkedin: 'https://www.linkedin.com/in/choksipriyam/' },
-                { name: 'Vishodhan Krishnan', photo: '/vishodhan.jpg', github: 'https://github.com/vishodhan-krishnan', linkedin: 'https://www.linkedin.com/in/vishodhankrishnan/' }
+                { id: 'priyam', name: 'Priyam Deepak Choksi', photo: '/priyam.jpg', video: '/videos/priyam.mp4', github: 'https://github.com/priyam-choksi', linkedin: 'https://www.linkedin.com/in/choksipriyam/' },
+                { id: 'vishodhan', name: 'Vishodhan Krishnan', photo: '/vishodhan.jpg', video: '/videos/vishodhan.mp4', github: 'https://github.com/vishodhan-krishnan', linkedin: 'https://www.linkedin.com/in/vishodhankrishnan/' }
               ].map((member, i) => (
                 <div key={i} style={{
                   display: 'flex',
@@ -2505,11 +2575,13 @@ export default function DocsPage() {
                   <img
                     src={member.photo}
                     alt={member.name}
+                    onClick={(e) => handleEggClick(member.id, e)}
                     style={{
                       width: '28px',
                       height: '28px',
                       borderRadius: '50%',
-                      objectFit: 'cover'
+                      objectFit: 'cover',
+                      cursor: 'pointer'
                     }}
                   />
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -2685,6 +2757,69 @@ export default function DocsPage() {
           </div>
         </main>
       </div>
+{/* ===== EASTER EGG OVERLAY (Video + Confetti) ===== */}
+      {(showEggVideo || showEggConfetti) && (
+        <div
+          onClick={handleEggVideoEnd}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: showEggVideo ? 'rgba(0,0,0,0.95)' : 'transparent',
+            backdropFilter: showEggVideo ? 'blur(20px)' : 'none',
+            cursor: 'pointer',
+            pointerEvents: showEggConfetti ? 'none' : 'auto'
+          }}
+        >
+          {/* VIDEO */}
+          {showEggVideo && (
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              onEnded={handleEggVideoEnd}
+              onClick={(e) => e.stopPropagation()}
+              style={{ 
+                maxWidth: '95vw', 
+                maxHeight: '90vh', 
+                borderRadius: '12px',
+                cursor: 'default'
+              }}
+            >
+              <source src={eggActive === 'priyam' ? '/videos/priyam.mp4' : '/videos/vishodhan.mp4'} type="video/mp4" />
+            </video>
+          )}
+
+          {/* CONFETTI - no background, just confetti falling */}
+          {showEggConfetti && confettiPieces.map((p) => (
+            <div
+              key={p.id}
+              style={{
+                position: 'absolute',
+                left: `${p.x}%`,
+                top: '-20px',
+                width: `${p.size}px`,
+                height: `${p.size}px`,
+                backgroundColor: p.color,
+                borderRadius: p.id % 3 === 0 ? '50%' : '2px',
+                animation: `eggFall ${p.duration}s ease-out ${p.delay}s forwards`,
+                pointerEvents: 'none'
+              }}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* ===== EASTER EGG ANIMATION ===== */}
+      <style>{`
+        @keyframes eggFall {
+          0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+      `}</style>
     </div>
   )
 }
