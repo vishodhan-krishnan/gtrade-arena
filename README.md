@@ -1,6 +1,6 @@
 # Trade Arena - A MATS (Multi-Agent Trading System)
 
-A comprehensive AI-driven trading analysis system that coordinates 11+ specialized LLM agents working collaboratively to analyze stocks, debate investment theses, and produce risk-adjusted trading decisions—with game-theoretic validation to test strategy performance across market regimes.
+A comprehensive AI-driven trading analysis system that coordinates 11+ specialized LLM agents working collaboratively to analyze stocks, debate investment theses, and produce risk-adjusted trading decisions—with game-theoretic validation to test strategy performance across market regimes. This is a showcase repository containing the UI, visualizations, and results for Trade Arena. Source code is maintained separately.
 
 ## Architecture Overview
 
