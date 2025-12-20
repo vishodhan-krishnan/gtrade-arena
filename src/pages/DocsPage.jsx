@@ -1304,7 +1304,7 @@ python main.py
 
 ### GitHub Repository
 
-https://github.com/priyam-choksi/matsmatsmats
+https://github.com/vishodhan-krishnan/gtrade-arena
 
 Full documentation, sample data, and instructions for running complete tournament simulations available in the repo.`
       }
@@ -2661,7 +2661,7 @@ export default function DocsPage() {
                 </p>
                 <div style={{ display: 'flex', gap: '10px' }}>
                   <a
-                    href="https://github.com/priyam-choksi/matsmatsmats"
+                    href="https://github.com/vishodhan-krishnan/gtrade-arena"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
