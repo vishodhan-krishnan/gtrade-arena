@@ -219,7 +219,7 @@ const DemoFooter = ({ isDark }) => (
     </span>
     <span style={{ color: 'var(--text-muted)', opacity: 0.4 }}>•</span>
     <a
-      href="https://github.com/priyam-03/Capstone"
+      href="https://github.com/vishodhan-krishnan/gtrade-arena"
       target="_blank"
       rel="noopener noreferrer"
       style={{
